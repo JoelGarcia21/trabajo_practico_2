@@ -10,24 +10,33 @@ public enum Provincia {
     SANTIAGO_DEL_ESTERO(874006, 136351);
 	
 	private int poblacion;
-	private double superficie;
+	private int superficie;
 	
-	private Provincia(int poblacion, double superficie) {
+	private Provincia(int poblacion, int superficie) {
 		this.poblacion = poblacion;
 		this.superficie = superficie;
 	}
 
-	public int getPoblacion() {
-		return poblacion;
-	}
+	// Métodos accesores
+    public int getPoblacion() {
+        return poblacion;
+    }
 
-	public double getSuperficie() {
-		return superficie;
-	}
+    public void setPoblacion(int Poblacion) {
+        this.poblacion = Poblacion;
+    }
+
+    public int getSuperficie() {
+        return superficie;
+    }
+
+    public void setSuperficie(int superficie) {
+        this.superficie = superficie;
+    }
 
 	//Metodo para calcular la densidad poblacional
-	private double calcularDensidad() {
-		return (double) poblacion/superficie;
+	public double calcularDensidad() {
+		return (double)poblacion/superficie;
 	}
 	
 	
