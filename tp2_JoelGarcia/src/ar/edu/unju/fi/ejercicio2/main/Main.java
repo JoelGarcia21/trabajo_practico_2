@@ -37,7 +37,7 @@ public class Main {
 						System.out.println();
 					}else {
 						switch( opc ) {
-						/*case 1:
+						case 1:
 							efemeride.crearEfemeride( efemeridesList, sc );
 							break;
 						case 2:
@@ -47,7 +47,7 @@ public class Main {
 							efemeride.eliminarEfemeride( efemeridesList, sc );
 							break;
 						case 4:
-							efemeride.modificarEfemeride( efemeridesList, sc );*/
+							efemeride.modificarEfemeride( efemeridesList, sc );
 						default:
 							System.out.println("Opcion no valida");
 						}
