@@ -29,6 +29,7 @@ public class Main {
 				
 				if( jugadores.isEmpty() && opc!=1 ){
 					System.out.println("ERROR: la lista de jugadores esta vacia.");
+					System.out.println();
 				}else {
 					
 					switch (opc) {
@@ -39,10 +40,10 @@ public class Main {
 		            	 jugador.mostrarJugadores(jugadores);
 		                 break;
 		             case 3:
-		                 //jugador.modificarPosicion();
+		                 jugador.modificarPosicion(jugadores, sc);
 		                 break;
 		             case 4:
-		            	 //jugador.eliminarJugador();
+		            	 jugador.eliminarJugador(jugadores, sc);
 		                 break;
 		             case 5:
 		                 System.out.println("Saliendo...");

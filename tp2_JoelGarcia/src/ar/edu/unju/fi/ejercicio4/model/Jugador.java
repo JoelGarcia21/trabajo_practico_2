@@ -3,8 +3,10 @@ package ar.edu.unju.fi.ejercicio4.model;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
+
 
 import ar.edu.unju.fi.ejercicio4.constantes.Posicion;
 
@@ -129,7 +131,7 @@ public class Jugador {
 			
 			do {
 				System.out.println("Ingrese posicion: ");
-				System.out.println("1: Delantero 2:Medio 3:Defensa 4:arquero");
+				System.out.println("1: Delantero 2:Medio 3:Defensa 4:Arquero");
 				posicion = sc.nextByte();
 			}while(posicion>4 || posicion<1);
 			
@@ -175,7 +177,10 @@ public class Jugador {
 		for(Jugador jugador : jugadores ) {
 			System.out.println("Nombre: "+jugador.getNombre());
 			System.out.println("Apellido: "+jugador.getApellido());
-			System.out.println("Fecha de nacimiento: "+jugador.getFechaNacimiento());
+			//Formatea la fecha y la aplica
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+			System.out.println("Fecha de nacimiento: "+formatter.format(jugador.getFechaNacimiento()));
+			
 			System.out.println("Edad: "+calcularEdad(jugador.getFechaNacimiento())+" años");
 			System.out.println("Nacionalidad: "+jugador.getNacionalidad());
 			System.out.println("Estatura: "+jugador.getEstatura()+"m");
@@ -184,6 +189,84 @@ public class Jugador {
 			System.out.println();
 			System.out.println("-----------------------");
 		}
-		
 	}
+	
+	//Busca jugador y lo cambia de Posicion
+	public void modificarPosicion(List<Jugador> jugadores, Scanner sc) {
+		System.out.println("Ingrese nombre del jugador: ");
+		String nombreBuscar = sc.nextLine();
+		
+		System.out.println("Ingrese apellido del jugador");
+		String apellidoBuscar = sc.nextLine();
+		
+		boolean jugadorExiste=false;
+		byte posicion=0;
+		
+		try {
+			for(Jugador jugador : jugadores) {
+				if((nombreBuscar.equalsIgnoreCase(jugador.getNombre()))&&(apellidoBuscar.equalsIgnoreCase(jugador.getApellido()))){
+					do {
+						jugadorExiste=true;
+						System.out.println("Ingrese nueva posicion: ");
+						System.out.println("1: Delantero 2:Medio 3:Defensa 4:Arquero");
+						posicion = sc.nextByte();
+					}while(posicion>4 || posicion<1);
+					
+					switch (posicion) {
+					case 1:
+						jugador.setPosicion(Posicion.DELANTERO);
+						break;
+					case 2:
+						jugador.setPosicion(Posicion.MEDIO);
+						break;
+					case 3:
+						jugador.setPosicion(Posicion.DEFENSA);
+						break;
+					case 4:
+						jugador.setPosicion(Posicion.ARQUERO);
+						break;
+					}
+					System.out.println("Posicion modifica con exito!");
+					System.out.println();
+				}
+			}
+		}catch ( java.util.InputMismatchException e ) {
+			System.out.println("Error al ingresar los datos del jugador, recuerde respetar el formato. ");
+			System.out.println();
+			sc.nextLine(); //limpia buffer
+		}
+		if(!jugadorExiste) {
+			System.out.println("El jugador no existe.");
+			System.out.println();
+		}
+	}
+	
+	//Busca y elimina jugador por nombre y apellido
+	public void eliminarJugador(List<Jugador> jugadores, Scanner sc) {
+		boolean existeJugador=false;
+		
+		System.out.println("Ingrese nombre del jugador: ");
+		String nombreBuscar =  sc.nextLine();
+		System.out.println("Ingrese apellido del jugador: ");
+		String apellidoBuscar = sc.nextLine();
+		
+		//Se crea un itearator para recorrer el arraylist
+		Iterator<Jugador> iterator = jugadores.iterator();
+		
+		while(iterator.hasNext()) {
+			Jugador jugador = iterator.next();
+			if((jugador.getNombre().equalsIgnoreCase(nombreBuscar)) && jugador.getApellido().equalsIgnoreCase(apellidoBuscar)) {
+				existeJugador=true;
+				//Se elimina al jugador
+				iterator.remove();
+				System.out.println("Jugador eliminado con exito!");
+				System.out.println();
+			}
+		}
+		if(!existeJugador) {
+			System.out.println("El jugador no existe.");
+			System.out.println();
+		}
+	}
+	
 }
