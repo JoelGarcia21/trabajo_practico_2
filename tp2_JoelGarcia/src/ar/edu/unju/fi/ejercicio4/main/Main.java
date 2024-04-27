@@ -25,6 +25,7 @@ public class Main {
 				System.out.println("4-Eliminar un jugador");
 				System.out.println("5-Salir");
 				opc = sc.nextByte();
+				sc.nextLine();
 				
 				if( jugadores.isEmpty() && opc!=1 ){
 					System.out.println("ERROR: la lista de jugadores esta vacia.");
@@ -32,10 +33,10 @@ public class Main {
 					
 					switch (opc) {
 		             case 1: 
-		                // jugador.darAltaJugador();
+		                jugador.darAltaJugador(jugadores, sc);
 		                 break;
 		             case 2:
-		            	 //jugador.mostrarJugadores();
+		            	 jugador.mostrarJugadores(jugadores);
 		                 break;
 		             case 3:
 		                 //jugador.modificarPosicion();
@@ -47,7 +48,7 @@ public class Main {
 		                 System.out.println("Saliendo...");
 		                 break;
 		             default:
-		                 System.out.println("Opcion invalida");
+		                 System.out.println("Opcion no valida");
 					}
 					}
 				}while( opc!=5 );
