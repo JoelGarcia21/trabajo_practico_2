@@ -1,6 +1,7 @@
 package ar.edu.unju.fi.ejercicio5.model;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import ar.edu.unju.fi.ejercicio5.interfaces.IPago;
 
@@ -47,13 +48,20 @@ public class PagoTarjeta implements IPago {
 
 	@Override
 	public void realizarPago(double monto) {
-		// TODO Auto-generated method stub
+		this.montoPagado=monto*1.15;
 		
 	}
-
 	@Override
 	public void imprimirRecibo() {
-		// TODO Auto-generated method stub
+		DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		
+		System.out.println("Imprimiendo recibo...");
+		System.out.println("----------------------------");
+		System.out.println("Número de tarjeta: " + numeroTarjeta);
+        System.out.println("Fecha de pago: " + fechaPago.format(formato));
+        System.out.println("Monto pagado: " + montoPagado+"$");
+        System.out.println();
+        System.out.println("----------------------------");
+        System.out.println();
 	}
 }

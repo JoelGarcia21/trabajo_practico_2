@@ -2,8 +2,11 @@ package ar.edu.unju.fi.ejercicio5.main;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
+import ar.edu.unju.fi.ejercicio5.model.PagoEfectivo;
+import ar.edu.unju.fi.ejercicio5.model.PagoTarjeta;
 import ar.edu.unju.fi.ejercicio5.model.Producto;
 
 public class Main {
@@ -28,7 +31,7 @@ public class Main {
         Producto producto15 = new Producto(15, "Notebook", 190000.0d, "Taiwán", "Electrónica", true);
 		
         //Creacion del array
-        ArrayList<Producto> productosArray = new ArrayList<>();
+        List<Producto> productosArray = new ArrayList<>();
         
         //Se añade todos los objetos Producto al array
         productosArray.add(producto1);
@@ -48,7 +51,7 @@ public class Main {
         productosArray.add(producto15);
         
         //Array para almacenar productos comprados
-        ArrayList<Producto> carrito = new ArrayList<>();
+        List<Producto> carrito = new ArrayList<>();
 		
 		Scanner sc = new Scanner(System.in);
 		
@@ -67,10 +70,10 @@ public class Main {
 			
 			switch (opc) {
 			case 1:
-					mostrarProductos();
+					mostrarProductos(productosArray);
 					break;
 			case 2:
-					realizarPago();
+					realizarPago(productosArray, carrito, sc);
 					break;
 			case 3:
 					System.out.println("Saliendo...");
@@ -86,4 +89,87 @@ public class Main {
 		sc.close();
 	}
 
+public static void mostrarProductos(List<Producto> productosArray) {
+	for (int i=0 ; i<productosArray.size() ; i++) {
+		System.out.println(productosArray.get(i));
+	}
+}
+	
+
+public static void realizarPago(List<Producto> productosArray, List<Producto> carrito, Scanner sc) {
+	//Variables
+	int tarjetaOpc, codigoProducto;
+	String aniadir;
+	double monto=0;
+	boolean encontrado=false;
+	
+	//Objetos para realizar las compras
+	PagoTarjeta pagoTarjeta = new PagoTarjeta();
+	PagoEfectivo pagoEfectivo = new PagoEfectivo();
+	
+		carrito.clear(); //Limpia el array para que cualquier compra que haga sea con el carrito vacio
+		monto=0;  //Se resetea el monto para no agregar lo de la primera carga
+		try {
+			do {
+				System.out.println("Ingrese codigo de producto: ");
+				codigoProducto=sc.nextInt();
+				sc.nextLine();
+				
+				for (Producto productoBuscar : productosArray) {
+					if (productoBuscar.getCodigo()==codigoProducto && productoBuscar.getDisponible()==true) { //Si el codigo y estado estan dispobibles lo agrega al carrito
+						carrito.add(productoBuscar);
+						System.out.println("Producto añadido al carrito!");
+						System.out.println();
+						encontrado=true; //Se encontro el codigo del producto
+					}
+				}
+				
+				if(!encontrado) {
+					System.out.println("Producto no disponible!");
+					System.out.println();
+				}
+				
+				System.out.println("Desea seguir añadiendo productos al carrito? (Y/N)");
+				aniadir=sc.nextLine();
+				encontrado=false; //Se resetea encontrado para que en cada iteracion de productos sea falso
+				
+			}while (!aniadir.equalsIgnoreCase("n")); //El bucle se repite mientras la opcion no sea 'N' o 'n'
+			
+			do {
+				System.out.println("Ingrese modo de pago: ");
+				System.out.println("1)Tarjeta de credito  |  2)Pago en efectivo");
+				tarjetaOpc=sc.nextInt();
+				sc.nextLine();
+			}while(tarjetaOpc!=1 && tarjetaOpc!=2);
+			
+			if (tarjetaOpc==1) {
+				System.out.println("Ingrese numero de tarjeta: ");
+				String numeroTarjeta = sc.nextLine();
+				
+				for (Producto productoPagar : carrito) {
+					monto = monto + productoPagar.getPrecioUnitario();
+				}
+				pagoTarjeta.setNumeroTarjeta(numeroTarjeta);
+				pagoTarjeta.setFechaPago(LocalDate.now());
+				pagoTarjeta.realizarPago(monto);
+				
+				pagoTarjeta.imprimirRecibo();
+				
+				
+			}else {
+				for (Producto productoPagar : carrito) {
+					monto = monto + productoPagar.getPrecioUnitario();
+				}
+				pagoEfectivo.setFechaDePago(LocalDate.now());
+				pagoEfectivo.realizarPago(monto);
+				
+				pagoEfectivo.imprimirRecibo();
+				
+			}
+		}catch(java.util.InputMismatchException ex)	{
+			System.out.println("Error. Intentelo de nuevo");
+			System.out.println();
+			sc.nextLine();
+		}
+	}
 }
