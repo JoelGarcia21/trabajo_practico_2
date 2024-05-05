@@ -3,6 +3,8 @@ package ar.edu.unju.fi.ejercicio7.main;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 import ar.edu.unju.fi.ejercicio5.model.Producto;
 
@@ -30,13 +32,13 @@ public class Main {
 	    	opc = sc.nextByte();
 	    	
 	    	switch (opc){
-	    	/*case 1:
+	    	case 1:
 	    		mostrarProductos();
 	    		break;
 	    	case 2:
 	    		mostrarProductosFaltantes();
 	    		break;
-	    	case 3:
+	    	/*case 3:
 	    		incrementarPrecios();
 	    		break;
 	    	case 4:
@@ -59,6 +61,21 @@ public class Main {
 	    sc.close();
 	}
 
+	//Muestra productos del array con estado false
+	public static void mostrarProductosFaltantes() {
+		Predicate<Producto> filterProductosFalse = p -> !p.getDisponible();
+		productosArray.stream().filter(filterProductosFalse).forEach(System.out::println);
+	}
+	
+	//Muestra productos del array con estado true
+	public static void mostrarProductos() {
+		Consumer<Producto> consumerProductosTrue = p -> {
+			if (p.getDisponible()) {
+				System.out.println(p);
+			}
+	};
+		productosArray.forEach(consumerProductosTrue);
+	}
 	
 	public static void cargarProductos() {
 		Producto producto1 = new Producto(1, "Camiseta", 1500.0d, "China", "Ropa", true);
