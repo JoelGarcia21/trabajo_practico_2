@@ -1,6 +1,7 @@
 package ar.edu.unju.fi.ejercicio7.main;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 import java.util.function.Consumer;
@@ -46,12 +47,12 @@ public class Main {
 	    	case 4:
 	    		mostrarProductosElectronicos();
 	    		break;
-	    	/*case 5:
+	    	case 5:
 	    		ordenarProductos();
 	    		break;
 	    	case 6:
 	    		convertirNombres();
-	    		break;*/
+	    		break;
 	    	case 7:
 	    		System.out.println("Saliendo...");
 	    		break;
@@ -62,7 +63,26 @@ public class Main {
 	
 	    sc.close();
 	}
+	
+	//Convierte el nombre de todos los productos a mayuculas
+	public static void convertirNombres() {
+		Function<Producto, Producto> functionConvertir = (p) -> {
+			p.setDescripcion(p.getDescripcion().toUpperCase());
+			return p;
+		};
+		List<Producto> productosArrayMayuculas = new ArrayList<>();
+		productosArrayMayuculas = productosArray.stream().map(functionConvertir).collect(Collectors.toList());
+		productosArrayMayuculas.forEach(System.out::println);
+	}
 
+	//Ordena los productos del array por precio de forma descendente
+	public static void ordenarProductos() {
+		Comparator<Producto> comparatorProducto =  Comparator.comparingDouble(Producto::getPrecioUnitario).reversed();
+		productosArray.sort(comparatorProducto);
+		productosArray.forEach(System.out::println);	
+	}
+	
+	
 	//Muestra los productos que sean de la categoria electronicos y su estado sea true
 	public static void mostrarProductosElectronicos() {
 		Predicate<Producto> filterElectronicosDisponibles = p -> p.getCatergoria().equals("Electrónico") && p.getDisponible();
