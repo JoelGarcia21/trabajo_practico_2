@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import ar.edu.unju.fi.ejercicio5.model.Producto;
 
@@ -38,13 +40,13 @@ public class Main {
 	    	case 2:
 	    		mostrarProductosFaltantes();
 	    		break;
-	    	/*case 3:
+	    	case 3:
 	    		incrementarPrecios();
 	    		break;
 	    	case 4:
 	    		mostrarProductosElectronicos();
 	    		break;
-	    	case 5:
+	    	/*case 5:
 	    		ordenarProductos();
 	    		break;
 	    	case 6:
@@ -61,6 +63,27 @@ public class Main {
 	    sc.close();
 	}
 
+	//Muestra los productos que sean de la categoria electronicos y su estado sea true
+	public static void mostrarProductosElectronicos() {
+		Predicate<Producto> filterElectronicosDisponibles = p -> p.getCatergoria().equals("Electrónico") && p.getDisponible();
+		productosArray.stream().filter(filterElectronicosDisponibles).forEach(System.out::println);;
+		
+	}
+	
+	//Muestra en un nuevo array los precios de los productos incrementados un 20 porciento
+	public static void incrementarPrecios() {
+		Function<Producto, Producto> functionIncremento = (p) -> {
+			double aumento = p.getPrecioUnitario() + p.getPrecioUnitario()*0.20d;
+			p.setPrecioUnitario(aumento);
+			return p;
+		};
+		List<Producto> productosArrayAumento = new ArrayList<>();
+		productosArrayAumento = productosArray.stream().map(functionIncremento).collect(Collectors.toList());
+		productosArrayAumento.forEach(System.out::println);
+		
+	}
+	
+	
 	//Muestra productos del array con estado false
 	public static void mostrarProductosFaltantes() {
 		Predicate<Producto> filterProductosFalse = p -> !p.getDisponible();
